@@ -45,3 +45,5 @@ This should also be done here:
 ### Additional Configuration Options
 Additional Configuration options are outlined here in the link below.  Keep in mind, the module is called vpl_story_city in this documentation.
 https://docs.google.com/document/d/15ShkhdjPQBWeqihlaJY2DhHFmF1CniBsJzL1VuTRpfU/edit?usp=sharing 
+
+If you have any issues installing the module, please file an issue and we'll be in touch.
