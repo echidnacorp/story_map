@@ -43,5 +43,5 @@ This should also be done here:
 - vpl_story_city_theme_registry_alter() (vpl_story_city.module:373 )
 
 ### Additional Configuration Options
-Additional Configuration options are outlined here:
+Additional Configuration options are outlined here in the link below.  Keep in mind, the module is called vpl_story_city in this documentation.
 https://docs.google.com/document/d/15ShkhdjPQBWeqihlaJY2DhHFmF1CniBsJzL1VuTRpfU/edit?usp=sharing 
