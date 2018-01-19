@@ -1,0 +1,648 @@
+.leaflet-container h4 {
+  font: normal 14px/1.3em "Open Sans", sans-serif;
+  margin-bottom: 0;
+  margin-top: .5em;
+}
+
+
+.col-sm-12 {
+  padding-right: 0 !important;
+}
+
+.page-story-city .row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.ip-geoloc-map {
+  margin-left: -15px;
+}
+
+/* Story City Neighbourhood outlines ******************************************/
+.leaflet-overlay-pane g path {
+  fill: #0E77AB;
+  stroke: #0E77AB;
+  stroke-width: 2;
+  fill-opacity: 0.3;
+  pointer-events: none !important;
+}
+
+/* Story City Page Layout *****************************************************/
+
+body.html {
+  background-color: #333333;
+}
+
+body.navbar-is-fixed-top .container-fluid {
+  margin-top: 110px;
+  padding: 0;
+}
+
+body.node-type-page #main-content {
+  max-width: 1030px;
+  margin: 0 auto;
+  float: none;
+  color: #fff;
+}
+
+.view-story-city {
+  position: relative;
+  z-index: 1;
+}
+
+/* Story City Page Layout ******************************************************/
+body.page-story-city .container-fluid {
+  margin-top: 0;
+  top:110px;
+  padding: 0;
+  position: relative;
+}
+
+body.admin-menu.node-type-page .container-fluid {
+  top: 130px;
+}
+
+/* Customize popups ************************************************************/
+.story-media audio {
+  width: 100%;
+}
+
+.story-media-audio {
+  border-top: 10px solid #1f92cf;
+}
+.story-media-video {
+  border-top: 10px solid #fdb727;
+}
+
+.story-media-image {
+  border-top: 10px solid #cf3d31;
+}
+
+.view-story-city .leaflet-popup {
+  padding-top: 3em;
+}
+.view-story-city .leaflet-popup-content-wrapper {
+  border-radius: 0;
+  /*border: 1px solid #888;*/
+  padding: 2em .75em 1.5em .75em;
+}
+
+.view-story-city .leaflet-popup-content {
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  max-width: 80vw;
+}
+
+.leaflet-popup-content-wrapper {
+  box-shadow: 0 3px 14px rgba(0,0,0,0.8) !important;
+}
+
+/* Button */
+.view-story-city .leaflet-popup-content-wrapper .story-media-download,
+.view-story-city .leaflet-popup-content-wrapper .story-media-read-more
+{
+  background-color: #337ab7;
+  display: inline-block;
+  padding: .75em 1.5em;
+  color: white;
+  text-align: center;
+  margin-top: 1em;
+  width: 45%;
+  max-width: 9em;
+}
+
+.view-story-city .leaflet-popup-content-wrapper .story-media-download {
+  margin-left: 10%;
+  float: right;
+}
+
+.view-story-city .leaflet-popup-content-wrapper .story-media-download,
+.view-story-city .leaflet-popup-content-wrapper .story-media-read-more {
+  text-decoration: none;
+  background-color: #337ccc;
+}
+/* Button End */
+
+/* Image */
+.view-story-city .leaflet-popup-content-wrapper .story-media a{
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+}
+.view-story-city .leaflet-popup-content-wrapper .story-media img {
+  width: auto;
+  max-width: 100%;
+  height: 225px;
+  /*min-height: 225px;*/
+}
+
+@media screen and (max-width: 412px) {
+  .view-story-city .leaflet-popup-content-wrapper .story-media img {
+    height: 150px;
+  }
+}
+
+@media screen and (max-height: 400px;) {
+  .view-story-city .leaflet-popup-content-wrapper .story-media img {
+    height: 150px;
+  }
+}
+
+
+/* Image End */
+
+/* Video */
+.remodal-story-media {
+  border-radius: 5px;
+}
+/* Video End */
+.view-story-city .leaflet-container .leaflet-popup-close-button {
+  top: 3.25em;
+  right: .75em;
+  color: #888;
+}
+
+/* Responsive Menu *************************************************************/
+
+@media screen and (max-width: 767px) {
+  .navbar-toggle {
+    margin: 0 !important;
+    top: 53%;
+    position: absolute !important;
+    right: 6%;
+    transform: translateY(-50%);
+  }
+  .navbar-toggle:hover, .navbar-toggle:active, .navbar-toggle:visited, .navbar-toggle:focus {
+    background-color: transparent !important;
+  }
+
+.leaflet-container {
+	height: 90vh !important;
+}
+
+  .navbar-toggle .icon-bar {
+    background-color: white !important;
+  }
+  .navbar-toggle:hover .icon-bar {
+    background-color: #ccc !important;
+    transition: all .2s ease-out;
+  }
+
+  header.navbar .navbar-collapse {
+    margin-top: 0 !important;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 110px;
+    width: 100%;
+
+  }
+  header.navbar .navbar-collapse.in {
+	display: table;
+  }
+  header.navbar .navbar-collapse li a {
+    display: block;
+    width: 100%;
+    background-color: #f5f5f5;
+    color: #333 ;
+    padding: 1em 1.5em;
+    margin: 0;
+    /*text-align: center;*/
+  }
+
+  header.navbar .navbar-collapse li a:before {
+    content:"";
+    display: inline-block;
+    vertical-align: middle;
+    width: 5px;
+    height: 20px;
+    background-color: #ccc;
+    margin-right: 1em;
+  }
+  header.navbar .navbar-collapse li a:hover {
+    background-color: #e1e4e6 !important;
+    text-decoration: none;
+    color: #333 !important;
+  }
+}
+
+
+/* Story City Exposed Filters **************************************************/
+
+.view-story-city .view-filters .filter-processing {
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+/*.view-story-city:before {
+  content:"Filters";
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  background-color: #e8e8e8;
+  padding: 1em 4.5em 1em 1.5em;
+  border-top: 1px solid #ccc;
+  position: relative;
+  line-height: 1em;
+  text-transform: uppercase;
+  font-weight: bold;
+}*/
+.view-story-city .view-filters {
+  display: none;
+  width: 100%;
+  max-width: 100%;
+}
+@media screen and (min-width: 768px) {
+  .view-story-city .view-filters {
+    /*float: right;*/
+    width: 100%;
+    /*max-width: 35%;*/
+    padding-left: 4px;
+    display: block;
+  }
+}
+
+.view-story-city .view-filters .accordion {
+
+}
+.view-story-city .view-filters .views-exposed-widget, .navbar-nav .view-filters .views-exposed-widget {
+  width: 100%;
+  display: none;
+}
+.view-story-city .view-filters .views-submit-button, .navbar-nav .view-filters .views-submit-button{
+  display: block;
+  font-size: 0;
+}
+
+.view-story-city .form-type-bef-checkbox img {
+  width: 24px;
+  height: 32px;
+}
+
+.page-story-city .view-filters .views-reset-button {
+  text-align: right;
+  background-color: whitesmoke;
+  padding: .5em 2em .5em 1em;
+  border-top: 1px solid #ccc;
+}
+.page-story-city .view-filters .views-reset-button button{
+  border: none;
+  border-radius: 0;
+  color: white;
+  background-color: #0f95d6;
+  margin: 0;
+  padding: .75em 2.5em;
+}
+
+.page-story-city .view-filters .views-reset-button button:hover {
+  background-color: #0b73a5;
+  transition: background-color .2s ease-out;
+}
+/* Story City Share Buttons ****************************************************/
+.view-story-city .addtoany-wrapper {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .view-story-city .addtoany-wrapper {
+    display: block;
+  }
+}
+
+.addtoany-wrapper {
+  /*float: right;*/
+  clear: both;
+  width: 100%;
+  padding-left: 4px;
+  /*max-width: 35%;*/
+}
+
+.addtoany-wrapper .a2a_kit {
+  background-color: #f5f5f5;
+  padding: 1em;
+}
+
+.addtoany-wrapper .a2a_kit .a2a_svg {
+  width: 25px;
+  height: 25px;
+}
+
+@media screen and (max-width: 767px) {
+  .addtoany-wrapper {
+    max-width: 100%;
+    padding-left: 0;
+    width: 100%;
+    border-top: 1px solid #ccc;
+  }
+  .views-exposed-widgets {
+    margin-bottom: 0;
+  }
+  .views-exposed-form .views-exposed-widget {
+    padding: 0;
+  }
+}
+
+/* Story City Form Controls ****************************************************/
+.view-story-city .form-control.form-checkboxes, .navbar-nav .form-control.form-checkboxes{
+  height: auto;
+  max-height: 160px;
+  min-width: 100px;
+  overflow-y: scroll;
+  border: none;
+  border-left: 10px solid #e1e4e6;
+  border-radius: 0;
+}
+
+.view-story-city .form-control .form-item, .navbar-nav .form-control .form-item{
+  padding: .75em 3.5em .75em 0;
+  position: relative;
+}
+.view-story-city .form-control .icheckbox_square-grey, .navbar-nav .form-control .icheckbox_square-grey{
+  position: absolute !important;
+  right: 1.25em;
+}
+
+.view-story-city input.form-control, .navbar-nav input.form-control {
+  height: auto;
+  width: auto;
+  display: inline;
+}
+.view-story-city .form-type-bef-checkbox label, .navbar-nav .form-type-bef-checkbox label{
+  margin-left: 5px;
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+.view-story-city .form-type-bef-checkbox label:hover, .navbar-nav .form-type-bef-checkbox label:hover{
+  color: black;
+}
+
+.view-story-city details summary, .navbar-nav details summary {
+  cursor: pointer;
+  background-color: #f5f5f5;
+  padding: 1.5em 4.5em 1.5em 1.5em;
+  border-top: 1px solid #ccc;
+/*  position: relative;*/
+  line-height: 1em;
+}
+.view-story-city details summary:hover, .navbar-nav details summary:hover {
+  background-color: #e1e4e6;
+}
+
+/* Story City Map Overlay Control **********************************************/
+.view-story-city .leaflet-control-layers .map-overlay-control {
+  width: 60px;
+  height: auto;
+  cursor: pointer;
+}
+
+.view-story-city .leaflet-touch .leaflet-control-layers {
+  background: none;
+  border-width: 0px;
+}
+
+/* Story City Marker Clusters **************************************************/
+
+/* General *************************/
+.marker-cluster {
+  background-color: black;
+  background-clip: padding-box;
+ }
+.marker-cluster div {
+  background-color: white;
+  text-align: center;
+  font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+ }
+/* IE 6-8 fallback colors */
+.leaflet-oldie .marker-cluster {
+  background-color: black;
+}
+.leaflet-oldie .marker-cluster div {
+  background-color: white;
+}
+.leaflet-tagged-marker div {
+  display: none;
+}
+
+/* Small *************************/
+.marker-cluster-small {
+  border-radius: 30px;
+  width: 30px !important;
+  height: 30px !important;
+  margin-left: -15px !important;
+  margin-top: -15px !important;
+}
+.marker-cluster-small div {
+  border-radius: 20px;
+  width: 20px;
+  height: 20px;
+}
+.marker-cluster-small span {
+  line-height: 20px;
+}
+/* Medium *************************/
+.marker-cluster-medium {
+  border-radius: 40px;
+  width: 40px !important;
+  height: 40px !important;
+  margin-left: -20px !important;
+  margin-top: -20px !important;
+}
+.marker-cluster-medium div {
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+}
+.marker-cluster-medium span {
+  line-height: 30px;
+}
+/* Large *************************/
+.marker-cluster-large {
+  border-radius: 50px;
+  width: 50px !important;
+  height: 50px !important;
+  margin-left: -25px !important;
+  margin-top: -25px !important;
+}
+.marker-cluster-large div {
+  border-radius: 40px;
+  width: 40px;
+  height: 40px;
+}
+.marker-cluster-large span {
+  line-height: 40px;
+}
+
+/* Story City Media **************************************************/
+.story-media {
+  text-align: center;
+}
+.story-media a {
+  display: block;
+}
+.story-media a:hover {
+  cursor: pointer;
+}
+.story-media img {
+  height: 200px;
+  width: auto;
+}
+.story-media-wrapper video {
+  width: 100%
+}
+.story-media-wrapper img {
+  width: 100%
+}
+
+
+/* Side Bar ******************************************************************/
+
+.filter-share-wrapper {
+  width: 500px;
+  max-width: 35%;
+  float: right;
+  display: block;
+  overflow: visible;
+  height: 70vh;
+}
+
+@media screen and (max-width: 767px) {
+  .filter-share-wrapper {
+    display: none;
+  }
+}
+
+.this-vancouver-wrapper {
+  /*float: right;*/
+  clear: both;
+  width: 100%;
+  padding: 1em 0 1em 0;
+  background-color: #333333;
+  margin-left: 4px;
+  /*max-width: 35%;*/
+/* lines overwritten by merge conflict
+  padding: 20px 20px 0 0;
+  max-width: 80%;
+*/
+}
+.this-vancouver-wrapper img{
+  max-width: 150px;
+}
+
+@media screen and (max-width: 767px) {
+  .this-vancouver-wrapper {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 0;
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+    background-color: #1a1a1a;
+    padding: 1em;
+    text-align: left;
+  }
+  .sponsor-wrapper {
+    float: left;
+    width: 100%;
+    background: #1a1a1a;
+    text-align: left;
+    color: white;
+    padding: 1em 1.5em 2em 1.5em;
+  }
+
+/*  .sponsor-wrapper .funding-credit {
+    padding-top: 1em;
+  }*/
+  .sponsor-wrapper .logo-wrap {
+    padding: 1em 0;
+    /*float: left;*/
+    /*width: 100%;*/
+    display: inline-block;
+    height: 5em;
+    margin-right: 3em;
+  }
+  .sponsor-wrapper .logo-wrap:last-child {
+    margin-right: 0;
+  }
+  .sponsor-wrapper .logo-wrap a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /*position: relative;*/
+    margin: auto;
+    text-align: left;
+  }
+  .sponsor-wrapper .logo-wrap img{
+    max-height: 100%;
+/*    width: auto;
+    max-width: 10em;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);*/
+  }
+  .bef-checkboxes img {
+    max-height: 20px;
+  }
+}
+
+.view-story-city details summary::-webkit-details-marker, .navbar-nav details summary::-webkit-details-marker {
+  display: none;
+}
+
+.view-story-city details summary:after, .navbar-nav details summary:after {
+  content:"";
+  height: .75em;
+  width: .75em;
+  display: inline-block;
+  border-right: 2px solid grey;
+  border-bottom: 2px solid grey;
+  transform: rotate(-45deg);
+  position: absolute;
+  right: 2.5em;
+  transition: all .2s ease-out;
+}
+.view-story-city details[open] summary, .navbar-nav details[open] summary {
+  background-color: #e1e4e6;
+}
+.view-story-city details[open] summary:after, .navbar-nav details[open] summary:after  {
+  transform: rotate(45deg);
+  transition: all .2s ease-out;
+}
+
+.view-story-city .views-submit-button button, .navbar-nav .views-submit-button button{
+  border-radius: 0;
+    padding: .75em 2.5em;
+    text-transform: uppercase;
+    color: white;
+    background-color: #287d96;
+    border: none;
+}
+
+.view-story-city .views-submit-button button:hover, .navbar-nav .views-submit-button button:hover {
+  background-color: #195769;
+}
+
+/* Story City mobile message */
+
+.mobile-message {
+	color: #fff;
+	padding: .75em 0;
+}
+.mobile-message span.fa { padding: .2em; }
+
+
+
+/* Story City Section Pages **************************************************/
+
+h1.page-header {
+  color: #fff;
+  padding: 10px 20px;
+}
+.field-name-body {
+  color: #fff;
+  padding: 10px 20px 30px;
+}
+
+

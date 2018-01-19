@@ -1,0 +1,171 @@
+/* Header */
+.navbar-brand {
+  height: auto !important;
+  max-width: 165px;
+}
+
+body.admin-menu .navbar-fixed-top {
+  top: 20px !important;
+}
+@media screen and (max-width: 767px) {
+  body.admin-menu .navbar-fixed-top {
+    position: absolute;
+    top: 0px !important;
+  }
+  body .navbar-fixed-top {
+    position: absolute;
+  }
+}
+
+header.navbar {
+  width: 100%;
+  max-width: 100% !important;
+  height: 110px !important;
+  padding: 1.2em 0;
+  border-radius: 0;
+  background-color: #1a1a1a;
+  margin-bottom: 0;
+}
+body header.navbar .in.collapsing {
+  display: none;
+}
+
+header.navbar .container {
+  max-width: 1300px;
+  margin: auto !important;
+}
+
+header.navbar .navbar-collapse {
+  margin-top: 4em;
+  float: right;
+  transition: none;
+}
+header.navbar .navbar-collapse .col-sm-7,  header.navbar .navbar-collapse .col-sm-7 ul{
+  padding-left: 0;
+  padding-right: 0;
+  width: 100%;
+}
+header.navbar .navbar-collapse li{
+  list-style: none;
+}
+
+@media screen and (min-width: 768px) {
+  header.navbar .navbar-collapse li {
+    display: inline-block;
+    margin-right: 3em;
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+}
+
+
+@media screen and (min-width: 768px) {
+  header.navbar .container a {
+    color: white !important;
+  }
+  header.navbar .navbar-nav {
+    width: auto;
+  }
+}
+
+header.navbar ul {
+  list-style-type: none;
+  float: right;
+}
+
+header.navbar .navbar-nav li {
+  /*float: left !important;*/
+  float: none;
+}
+
+header.navbar .navbar-nav li a {
+  /*margin-left: 20px;*/
+}
+
+header.navbar .container a:hover {
+  text-decoration: underline;
+  background-color: transparent !important;
+}
+
+/* Header ends */
+
+/* Footer */
+.page-end {
+  background-color: #1a1a1a;
+  padding: 2em;
+  color: white;
+  position: relative;
+  top: 110px;
+  border-top: none !important;
+/* over written by merge conflict
+  top: 140px;
+*/
+}
+
+body.admin-menu.page-story-city .page-end {
+  top: 110px;
+}
+
+footer .col-xs-3 {
+  display: inline-block;
+  margin: 1em;
+  width: auto;
+  padding-top: 2.6em;
+  margin-bottom: 2em;
+}
+
+footer .col-xs-3 a {
+  display: block;
+  max-width: 200px;
+}
+
+footer .col-xs-9 {
+  display: inline-block;
+  width: auto;
+  float: right;
+  margin-top: -34px !important;
+}
+
+footer .col-xs-9 .logo-wrap {
+  max-width: 135px;
+  margin: 0 1.5em 1.5em 1.5em;
+  display: inline-block;
+}
+footer img {
+  display: block;
+  width: 100%;
+}
+
+#block-system-powered-by {
+  display: none;
+}
+
+footer .region.region-footer {
+  padding: 0;
+  width: 25%;
+  min-width: 230px;
+}
+
+@media screen and (max-width: 1360px) {
+  footer .col-xs-3 {
+    padding-top: 1em;
+  }
+  footer .col-xs-9 {
+    float: none;
+	margin-top: 0px !important;
+  }
+}
+/* Footer ends */
+
+/* cowboy CSS code */
+/* removed to resolve merge conflict
+	  .page-end > .container > .row > .col-xs-3 > a > img.vpl { opacity:1 ; max-width: 90%; height: auto; }
+	  .logo-wrap { display: inline-block; min-height: 100px; padding-right: 30px; }
+	  .logo-wrap img { opacity:1 ; max-width: 160px; height: auto; }
+*/
+	  img { image-rendering: -moz-crisp-edges; /* Firefox /
+image-rendering: -o-crisp-edges; / Opera /
+image-rendering: -webkit-optimize-contrast;/ Webkit (non-standard naming) /
+image-rendering: crisp-edges;
+-ms-interpolation-mode: nearest-neighbor; / IE (non-standard property) */
+}

@@ -1,0 +1,399 @@
+<?php
+
+/**
+ * Implements hook_views_api().
+ */
+function story_map_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'story_map') . '/views',
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function story_map_menu() {
+  $items = array();
+  $items['admin/islandora/language-mapping-settings'] = array(
+    'title' => 'Story City: Language Mapping Settings',
+    'description' => 'Configure the Story City Language Mapping',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_story_map_language_mapping'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function _story_map_language_mapping() {
+  $form = array();
+  // Grab current settings to use as defaults
+  $defaults = variable_get('story_map_language_mappings');
+
+  $form['story_map_language_mappings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Language Mapping'),
+    '#tree' => TRUE,
+  );
+
+  $form['story_map_language_mappings']['short_codes'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Language short codes'),
+    '#default_value' => (isset($defaults['short_codes']) ? $defaults['short_codes'] : ''),
+    '#description' => t('A list of language short codes. One entry per line in the format of SHORT_CODE|LANGUAGE'),
+    '#required' => TRUE,
+  );
+
+  $short_codes = explode("\n", str_replace("\r", "", $defaults['short_codes']));
+
+  foreach ($short_codes as $short_code) {
+    if (!empty($short_code)) {
+      list($short_code, $short_code_title) = explode("|", $short_code);
+      $short_code = check_plain($short_code);
+      $short_code_title = check_plain($short_code_title);
+
+      $form['story_map_language_mappings'][$short_code] = array(
+        '#type' => 'textfield',
+        '#title' => $short_code_title . ' (' . $short_code . ')',
+        '#default_value' => (isset($defaults[$short_code]) ? $defaults[$short_code] : ''),
+        '#description' => t('Language mapping for ' . $short_code_title . '.'),
+        '#required' => FALSE,
+      );
+    }
+  }
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_views_data().
+ */
+function story_map_views_data() {
+  $data['story_map']['table']['group'] = t('Story City');
+  $data['story_map']['table']['join'] = array(
+    // Exist in all views.
+    '#global' => array(),
+  );
+
+  $data['story_map']['story_city_lat_field'] = array(
+    'title' => t('Latitude'),
+    'help' => t('Latitude attribute'),
+    'field' => array(
+      'handler' => 'views_handler_story_city_lat_field',
+    ),
+  );
+  $data['story_map']['story_city_long_field'] = array(
+    'title' => t('Longitude'),
+    'help' => t('Longitude attribute'),
+    'field' => array(
+      'handler' => 'views_handler_story_city_long_field',
+    ),
+  );
+  $data['story_map']['story_city_media_field'] = array(
+    'title' => t('Media'),
+    'help' => t('Media attribute'),
+    'field' => array(
+      'handler' => 'views_handler_story_city_media_field',
+    ),
+  );
+  $data['story_map']['story_city_media_type_field'] = array(
+    'title' => t('Media Type'),
+    'help' => t('Media type attribute'),
+    'field' => array(
+      'handler' => 'views_handler_story_city_media_type_field',
+    ),
+  );
+
+  return $data;
+}
+
+function story_map_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == "views_exposed_form" && $form['#id'] == "views-exposed-form-story-city-page-1") {
+
+    // Modify the Language Filter to use Language Mapping and hide English
+    if (!empty($form['language'])) {
+      $story_map_language_mappings = variable_get('story_map_language_mappings');
+      foreach ($form['language']['#options'] as $key => $option) {
+        if ($option == 'eng') {
+          unset($form['language']['#options'][$key]);
+        }
+        elseif ($story_map_language_mappings[$option]) {
+          $form['language']['#options'][$key] = $story_map_language_mappings[$option];
+        }
+      }
+    }
+
+    // Modify the Format Filter
+    if (!empty($form['format'])) {
+      foreach ($form['format']['#options'] as $key => $option) {
+        if ($option != 'audio' && $option != 'imag' && $option != 'video') {
+          unset($form['format']['#options'][$key]);
+        }
+        elseif ($option == 'imag') {
+          $form['format']['#options'][$key] = 'Image';
+        }
+        else {
+          $form['format']['#options'][$key] = ucfirst($option);
+        }
+      }
+    }
+  }
+}
+
+function story_map_page_alter(&$page) {
+  global $_addtoany_init, $_addtoany_targets;
+
+  // Always add CSS file (necessary for aggregation)
+  $page['content']['#attached']['css'][] = drupal_get_path('module', 'addtoany') . '/addtoany.css';
+
+  if (preg_match('/story-city*/', current_path())) {
+    $javascript_header = "window.a2a_config=window.a2a_config||{};"
+      . "window.da2a={done:false,"
+      . "html_done:false,"
+      . "script_ready:false,"
+      . "script_load:function(){"
+      . "var a=document.createElement('script'),"
+      . "s=document.getElementsByTagName('script')[0];"
+      . "a.type='text/javascript';a.async=true;"
+      . "a.src='https://static.addtoany.com/menu/page.js';"
+      . "s.parentNode.insertBefore(a,s);"
+      . "da2a.script_load=function(){};"
+      . "},"
+      . "script_onready:function(){"
+      . "da2a.script_ready=true;"
+      . "if(da2a.html_done)da2a.init();"
+      . "},"
+      . "init:function(){"
+      . "for(var i=0,el,target,targets=da2a.targets,length=targets.length;i<length;i++){"
+      . "el=document.getElementById('da2a_'+(i+1));"
+      . "target=targets[i];"
+      . "a2a_config.linkname=target.title;"
+      . "a2a_config.linkurl=target.url;"
+      . "if(el){"
+      . "a2a.init('page',{target:el});"
+      . "el.id='';" // Remove ID so AJAX can reuse the same ID
+      . "}"
+      . "da2a.done=true;"
+      . "}"
+      . "da2a.targets=[];" // Empty targets array so AJAX can reuse from index 0
+      . "}"
+      . "};"
+      // AJAX support
+      . "(function ($){"
+      . "Drupal.behaviors.addToAny = {"
+      . "attach: function (context, settings) {"
+      // If not the full document (it's probably AJAX), and window.da2a exists
+      . "if (context !== document && window.da2a) {"
+      . "if(da2a.script_ready)a2a.init_all('page');" // Init all uninitiated AddToAny instances
+      . "da2a.script_load();" // Load external script if not already called
+      . "}"
+      . "}"
+      . "}"
+      . "})(jQuery);"
+      . "a2a_config.callbacks=a2a_config.callbacks||[];"
+      . "a2a_config.callbacks.push({ready:da2a.script_onready});"
+      . "a2a_config.templates=a2a_config.templates||{};"
+      . ((variable_get('addtoany_no_3p', '0') != '1') ? "" : "a2a_config.no_3p=1;")
+      . variable_get('addtoany_additional_js', '');
+
+    if (!isset($_addtoany_targets)) {
+      $_addtoany_targets = array();
+    }
+    $javascript_footer = "da2a.targets=["
+      . implode(",", $_addtoany_targets)
+      . "];\n"
+      . "da2a.html_done=true;"
+      . "if(da2a.script_ready&&!da2a.done)da2a.init();" // External script may load before html_done=true, but will only init if html_done=true.  So call da2a.init() if external script is ready, and if da2a.init() hasn't been called already.  Otherwise, wait for callback to call da2a.init()
+      . "da2a.script_load();"; // Load external script if not already called with the first AddToAny instance.  Fixes issues where first instance code is processed internally but without actual code output
+
+    $page['content']['#attached']['js'][] = array(
+      'data' => $javascript_header,
+      'scope' => 'header',
+      'type' => 'inline',
+    );
+
+    $page['content']['#attached']['js'][] = array(
+      'data' => $javascript_footer,
+      'scope' => 'footer',
+      'type' => 'inline',
+    );
+
+    /**
+     * Custom CSS Setting
+     */
+    $css = variable_get('addtoany_additional_css', '');
+    if (!empty($css)) {
+      drupal_add_css($css, 'inline');
+    }
+  }
+}
+
+function story_map_views_pre_render(&$view) {
+  if ($view->name == 'story_city' && $view->current_display == 'page_1') {
+    $story_map_path = drupal_get_path('module', 'story_map');
+
+
+    /***********************************
+     * Add CSS and JS to view
+     ************************************/
+    drupal_add_css($story_map_path . '/icheck/grey.css');
+
+
+    drupal_add_js(drupal_get_path('module', 'story_map') . '/story_map.js');
+    drupal_add_js(drupal_get_path('module', 'story_map') . '/icheck/icheck.min.js');
+
+
+    // Add historical_map_overlay_path setting to be used in JS
+    drupal_add_js(
+      array(
+        'story_map' => array(
+          'historical_map_overlay_path' => $story_map_path . '/assets/overlay/GoadMapVancouver.jpg',
+          'map_overlay_control_path' => $story_map_path . '/assets/overlay/map-1912.png',
+          'this_vancouver_path' => $story_map_path . '/assets/images/this-vancouver-00.png',
+          'neighbourhoods' => $story_map_path . '/assets/neighbourhoods',
+          'marker_icons' => array(
+            'image' => $story_map_path . '/assets/markers/red-image.png',
+            'video' => $story_map_path . '/assets/markers/yellow-video.png',
+            'audio' => $story_map_path . '/assets/markers/blue-audio.png',
+          ),
+
+        ),
+      ), 'setting'
+    );
+    // Add CSS and JS from the Remodal library
+    drupal_add_css('sites/all/libraries/remodal/dist/remodal-default-theme.css');
+    drupal_add_css('sites/all/libraries/remodal/dist/remodal.css');
+    drupal_add_js('sites/all/libraries/remodal/dist/remodal.min.js');
+
+    // Add JS from the SimpleStateManager library
+    drupal_add_js('sites/all/libraries/SimpleStateManager/dist/ssm.min.js');
+
+    // Add JS from the Leaflet-Plugins library for KML
+    drupal_add_js('sites/all/libraries/leaflet-plugins/layer/vector/KML.js');
+
+    /***********************************
+     * Map the language short code to the
+     * correct language mapping
+     * Don't display English language mapping
+     ************************************/
+    $story_map_language_mappings = variable_get('story_map_language_mappings');
+    foreach ($view->result as $key => $value) {
+      if (!empty($value->mods_language_languageTerm_code_s)) {
+        if ($value->mods_language_languageTerm_code_s == 'eng') {
+          $value->mods_language_languageTerm_code_s = '';
+        }
+        else {
+          $language_mapping = $story_map_language_mappings[$value->mods_language_languageTerm_code_s];
+          if ($language_mapping) {
+            $value->mods_language_languageTerm_code_s = $story_map_language_mappings[$value->mods_language_languageTerm_code_s];
+          }
+        }
+      }
+    }
+  }
+}
+
+function story_map_leaflet_map_info_alter(&$map_info) {
+  // For most maps, use headless protocol rather than logic based on $is_https;
+  $prot = '//';
+  global $is_https;
+
+  // As used by most.
+  $zxy = '{z}/{x}/{y}.png';
+  // As used by Esri.
+  $zyx = '{z}/{y}/{x}.png';
+  // Stamen http://stamen.com
+  $attr_stamen = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>. ';
+  $stamen_names = array(
+    'Toner-Lite',
+    'Terrain',
+    'Terrain-Lines'
+    /* , 'Terrain'*/
+  );
+  $default_settings = leaflet_more_maps_default_settings();
+  foreach ($stamen_names as $stamen_name) {
+    $code = drupal_strtolower($stamen_name);
+    $label = "Stamen $stamen_name (zoom 0..19)";
+    $t = t('@label , USA only', array('@label' => $label));
+    if ($is_https) {
+      $url_template = $prot . "stamen-tiles-{s}.a.ssl.fastly.net/$code/$zxy";
+    }
+    else {
+      $url_template = $prot . "{s}.tile.stamen.com/$code/$zxy";
+    }
+    $map_info["stamen-$code"] = array(
+      'label' => $code == 'terrain' ? $t : $label,
+      'description' => t('@label layer.', array('@label' => $label)),
+      'settings' => $default_settings,
+      'layers' => array(
+        'layer' => array(
+          'urlTemplate' => $url_template,
+          'options' => array('attribution' => $attr_stamen),
+        ),
+      ),
+    );
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function story_map_preprocess_page(&$variables) {
+  /*if (arg(0) === 'story-city') {
+    $variables['title'] = '';
+  }
+  if (preg_match('/story-city/*', url(current_path()))) {
+    $variables['theme_hook_suggestions'][] = 'page__story_city';
+    $story_map_path = drupal_get_path('module', 'story_map');
+
+    drupal_add_css($story_map_path . '/story_map.css');
+    drupal_add_css($story_map_path . '/story_map_header_footer.css');
+  }
+  */
+}
+
+/**
+ * Implements hook_preprocess_html().
+ * Adds the page-story-city class to the body on About, Help pages for styling
+ * consistency.
+ */
+function story_map_preprocess_html(&$variables) {
+/*
+  if (preg_match('/story-city/*', url(current_path()))) {
+    $variables['classes_array'][] = 'page-story-city';
+  }*/
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function story_map_theme_registry_alter(&$theme_registry) {
+/*  $extension = '.tpl.php';
+  $module_path = drupal_get_path('module', 'story_map');
+  $files = file_scan_directory($module_path . '/templates', '/' . preg_quote($extension) . '$/');
+
+  foreach ($files as $file) {
+    $template = drupal_basename($file->filename, $extension);
+    $theme = str_replace('-', '_', $template);
+    list($base_theme, $specific) = explode('__', $theme, 2);
+
+    // Don't override base theme.
+    if (!empty($specific) && isset($theme_registry[$base_theme])) {
+      $theme_info = array(
+        'template' => $template,
+        'path' => drupal_dirname($file->uri),
+        'base hook' => $base_theme,
+        // Other available value: theme_engine.
+        'type' => 'module',
+        'theme path' => $module_path,
+      );
+      if (isset($theme_registry[$base_theme]['variables'])) {
+        $theme_info['variables'] = $theme_registry[$base_theme]['variables'];
+      }
+
+      $theme_registry[$theme] = $theme_info;
+    }
+  }*/
+}

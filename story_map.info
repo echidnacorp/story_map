@@ -1,0 +1,20 @@
+name = Story City
+description = "Adjustments to the Story City view"
+package = Digital Echidna
+version = 7.0
+core = 7.x
+
+dependencies[] = addtoany
+dependencies[] = better_exposed_filters
+dependencies[] = ip_geoloc
+dependencies[] = islandora_solr_views
+dependencies[] = leaflet
+dependencies[] = leaflet_markercluster
+dependencies[] = leaflet_more_maps
+dependencies[] = views_ajax_history
+
+files[] = views/views_handler_story_city_lat_field.inc
+files[] = views/views_handler_story_city_long_field.inc
+files[] = views/views_handler_story_city_media_field.inc
+files[] = views/views_handler_story_city_media_type_field.inc
+files[] = views/story_map_handler_filter_options.inc
