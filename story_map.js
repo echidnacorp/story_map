@@ -173,8 +173,6 @@
                 if(PRINT_DEBUG) { console.log('Removing Filter from URL: ' + filter_name); }
                 //Loading in with filter and popup
                 var new_url = document.location.href.replace(filter_regex, "");
-                console.log(new_url);
-
                 clearQueryData(map, new_url);
 
                 if(PRINT_DEBUG) { console.log('  ' + document.location.href); }
